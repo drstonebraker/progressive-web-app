@@ -29,7 +29,7 @@ var injectedForecast = {
 (function() {
   'use strict';
 
-  var weatherAPIUrlBase = 'https://publicdata-weather.firebaseio.com/';
+  var weatherAPIUrlBase = 'https://api.darksky.net/forecast/0596156d5c90ef6dd7119a8491ae874d/42.3601,-71.0589';
 
   var app = {
     isLoading: true,
@@ -153,7 +153,19 @@ var injectedForecast = {
 
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function(key, label) {
-    var url = weatherAPIUrlBase + key + '.json';
+    // var url = weatherAPIUrlBase + key + '.json';
+    var url = weatherAPIUrlBase;
+    if ('caches' in window) {
+      caches.match(url).then(function(response) {
+        if (response) {
+          response.json().then(function(json) {
+            json.key = key;
+            json.label = label;
+            app.updateForecastCard(json);
+          })
+        }
+      })
+    }
     // Make the XHR to get the data, then update the card
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {

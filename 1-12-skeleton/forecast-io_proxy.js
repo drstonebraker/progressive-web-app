@@ -4,7 +4,7 @@ var http = require('http');
 var https = require('https');
 
 var port = 9800;
-var forecastIOKey = 'PUT_FORECAST_IO_API_KEY_HERE';
+var forecastIOKey = '0596156d5c90ef6dd7119a8491ae874d';
 var cachedForecasts = {};
 
 var cityToLatLon = {
@@ -46,8 +46,8 @@ function handleRequest(request, response) {
       response.end(freshForecast);
       var forecast = JSON.parse(freshForecast);
       forecast.expiresAt = Date.now() + (1000 * 60);
-      cachedForecasts[cityName] = forecast; 
-      console.log('RESP ', cityName, '[network]');     
+      cachedForecasts[cityName] = forecast;
+      console.log('RESP ', cityName, '[network]');
     });
   }
 }
